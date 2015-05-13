@@ -1,0 +1,50 @@
+{
+    "TWILIO_ACCOUNT_SID":{
+        "title":"Account SID",
+        "description": "This is like your username for the Twilio API",
+        "type":"string",
+        "minLength":1,
+        "maxLength":40
+    },
+    "TWILIO_AUTH_TOKEN":{
+        "title":"Auth token",
+        "description": "This is like your password for the Twilio API",
+        "type":"string",
+        "minLength":1,
+        "maxLength":40
+    },
+    "TWILIO_NUMBER":{
+        "title":"Twilio number",
+        "description": "Twilio number from your account",
+        "type":"string",
+        "minLength":11
+    },
+    "RECORD_TIMEOUT":{
+        "title":"Record timeout",
+        "description": "The 'timeout' attribute tells Twilio to end the recording after a number of seconds of silence has passed",
+        "type":"number",
+        "minimum":0,
+        "default":5
+    },
+    "RECORD_MAX_LENGTH":{
+        "title":"Record max length",
+        "description": "Maximum length for the recording in seconds",
+        "type":"number",
+        "minimum":1,
+        "default":3600
+    },
+    "RECORD_PLAY_BEEP":{
+        "title":"Play beep",
+        "description": "Allows you to toggle between playing a sound before the start of a recording",
+        "type":"boolean",
+        "minimum":1,
+        "default":true
+    },
+    "NUMBER_EVENT_DATA":{
+        "title":"Name of event data with customer phone number",
+        "description": "",
+        "type":"string",
+        "minimum":1,
+        "default":"phoneNumber"
+    }
+}

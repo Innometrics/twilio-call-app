@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Set and get settings in DH</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="https://yastatic.net/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
+	<link rel="stylesheet" type="text/css" href="css/inno-theme.css">
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    <div id="form-setting" role="form"></div>
+                    <button id="submit-setting" class="btn btn-default">Save</button>
+                </p>
+            </div>
+            <div class="col-md-6 quote">
+                <blockquote>
+                    <p>When you click “Save” these settings will be set to App Settings in Cloud. Read documentation <a onclick="window.open('https://innometrics.atlassian.net/wiki/display/DOCS/App+Configuration+API', '_blank');" href="#">here</a>.</p>
+                    <p>Once profile stream will come to backend part these settings will be set into profile attributes of income profile.</p>
+                </blockquote>
+            </div>
+        </div>
+
+        <script src="https://yastatic.net/jquery/2.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://s3.amazonaws.com/dc.customer.dev/helper/live/inno-helper.min.js"></script>
+        <script type="text/javascript" src="js/vendors/jsoneditor.min.js"></script>
+        <script type="text/javascript" src="js/settings.js"></script>
+    </body>
+</html>

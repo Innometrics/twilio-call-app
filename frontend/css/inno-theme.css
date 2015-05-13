@@ -1,0 +1,195 @@
+body {
+    font-size: 13px;
+    font-family: Arial, Verdana, Sans-Serif;
+    color: #666;
+}
+
+
+h3 {
+    color: #333;
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 0.3em;
+}
+
+.well 
+{
+    background: transparent;
+    border: 1px solid #e0e0e0;
+    padding: 15px 5px 20px;
+    margin-bottom: 10px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+.well-sm 
+{
+    border-radius: 0;
+}
+
+
+
+/* BASE INPUT */
+label, 
+label.form-label 
+{ 
+    display: block;
+    font-weight: normal;
+    margin: 0 0 3px 0;
+    float: none;
+    clear: none;
+    padding: 0;
+    line-height: normal;
+}
+
+input,
+select,
+textarea,
+.form-control
+{
+    padding: 5px;
+    border: 1px solid;
+    border-color: #b5b5b5 #dadada #dadada #dadada; 
+    background: white;
+    line-height: 15px; 
+    height: 30px;
+    border-radius: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 500px;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.form-group input, 
+.form-group select,
+.form-group textarea
+{
+    max-width: none;
+}
+
+
+select,
+textarea,
+select.form-control,
+textarea.form-control,
+.checkbox input[type=checkbox]
+{
+    height: auto;
+}
+
+.checkbox input[type=checkbox]
+{
+    margin-top: 2px;
+}
+
+select[multiple],
+select[multiple].form-control 
+{
+    padding: 0;
+}
+
+select option,
+select.form-control option 
+{
+    padding: 7px 10px;
+}
+
+
+/* ERROR INPUT */
+.has-error input, 
+.has-error select,
+.has-error textarea,
+.has-error .form-control
+{
+    border-bottom-width: 2px;
+    border-color: #b5b5b5 #dadada #a90000 #dadada;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.has-error input:focus,
+.has-error select:focus,
+.has-error textarea:focus,
+.has-error .form-control:focus
+{
+    border-color: #b5b5b5;
+    border-bottom-color: #a90000;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+
+
+/* FOCUSED INPUT */
+input:focus, 
+select:focus,
+textarea:focus,
+.form-control:focus
+{
+    border-color: #b5b5b5;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+
+
+
+
+/* BUTTONS */
+button,
+.btn
+{
+    color: #333;
+    background-repeat: repeat-x;
+    background-position: 0 0;
+    background-image: url("https://customer.innomdc.com/elygui/images/component/button/gray-big.png");
+    border: 1px solid #ccc;
+    border-bottom-color: #777;
+    height: 28px;
+    font-weight: bold;
+    font-size: 1.07em;
+    display: inline-block; 
+    width: auto;
+    min-width: 75px;
+    padding: 0 8px;
+    line-height: 26px;
+    margin: 0px;
+    border-radius: 0;
+}
+
+button:active,
+.btn:active 
+{
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;   
+}
+
+button.btn-green,
+.btn.btn-green 
+{
+    color: white;
+    background-image: url("https://customer.innomdc.com/elygui/images/component/button/green.png");
+    border-color: #063;
+    border-bottom-color: #00592d;
+    text-shadow: 0px 1px #333;
+}
+
+button.btn-red,
+.btn.btn-red 
+{
+    background-image: url("https://customer.innomdc.com/elygui/images/component/button/red.png");
+    border-color: #661a00;
+    border-bottom-color: #7f2000;
+    color: #fff;
+    text-shadow: 0px 1px #333;
+}

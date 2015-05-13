@@ -1,0 +1,14 @@
+{
+    "version_name": "feedback-recorder",
+    "version_description": "",
+    "pages": [{
+        "name": "App Settings",
+        "type": "bundled",
+        "content": "frontend/settings.html"
+    }],
+    "permissions": ["stream", "profile.update", "profile.read", "app.read.own"],
+    "runtime": {
+        "language": "php",
+        "version": "5.5"
+    }
+}
