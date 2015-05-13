@@ -45,6 +45,6 @@
         "description": "",
         "type":"string",
         "minimum":1,
-        "default":"phoneNumber"
+        "default":"phonenumber"
     }
 }

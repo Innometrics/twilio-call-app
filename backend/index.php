@@ -49,7 +49,7 @@ $app->post('/', function(Request $request) use($app, $inno) {
         'TWILIO_ACCOUNT_SID'    => null,
         'TWILIO_AUTH_TOKEN'     => null,
         'TWILIO_NUMBER'         => null,
-        'NUMBER_EVENT_DATA' => 'phoneNumber'
+        'NUMBER_EVENT_DATA' => 'phonenumber'
     );
 
     try {
