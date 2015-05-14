@@ -33,7 +33,7 @@ $app->get('/', function() use ($app) {
     if ($app['debug']) {
         error_log('ROUTE LOG: open "/"');
     }
-    return 'Hello, I am Feedback Recorder application! Sorry but I have not web interface :(';
+    return 'Hello, I am Twilio Call application! Sorry but I have not web interface :(';
 });
 
 // Handle Profile Stream from Innometrics DH
