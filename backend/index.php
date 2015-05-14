@@ -8,7 +8,7 @@ require_once('vendor/autoload.php');
 
 // Base application
 $app = new Silex\Application();
-$app['debug'] = true;
+$app['debug'] = !!getenv('DEBUG');
 
 // Innometrics helper
 $inno = new Helper();
@@ -24,27 +24,36 @@ $inno->setVars(array(
 $inno->setVar('collectApp', getenv('INNO_APP_ID'));
 
 
-
 //
 // All ready, configure http requests handlers!
 //
 
 // Root
-$app->get('/', function() {
+$app->get('/', function() use ($app) {
+    if ($app['debug']) {
+        error_log('ROUTE LOG: open "/"');
+    }
     return 'Hello, I am Feedback Recorder application! Sorry but I have not web interface :(';
 });
 
 // Handle Profile Stream from Innometrics DH
 $app->post('/', function(Request $request) use($app, $inno) {
+    if ($app['debug']) {
+        error_log('ROUTE LOG: open "/" - Profile Stream handler');
+    }
+
+    // Extract data from Profile stream
     try {
         $data = $inno->getStreamData($request->getContent());
     } catch (\ErrorException $error) {
-        error_log($error->getMessage());
+        $message = $error->getMessage();
+        error_log($message);
         return $app->json(array(
-            'error' => $error->getMessage()
+            'error' => $message
         ));
     }
 
+    // settings mock
     $settings = array(
         'TWILIO_ACCOUNT_SID'    => null,
         'TWILIO_AUTH_TOKEN'     => null,
@@ -52,17 +61,21 @@ $app->post('/', function(Request $request) use($app, $inno) {
         'NUMBER_EVENT_DATA' => 'phonenumber'
     );
 
+    // retrieve app settings from DH
     try {
         $settings = array_merge($settings, $inno->getSettings());
     } catch (\ErrorException $error) {
-        error_log($error->getMessage());
+        $message = $error->getMessage();
+        error_log($message);
         return $app->json(array(
-            'error' => $error->getMessage()
+            'error' => $message
         ));
     }
 
     $profile = $data['profile']['id'];
     $inno->setVar('profileId', $profile);
+
+    // Try to get phone number from event data
     $eventData = $data['data'];
     $numberEventDataName = $settings['NUMBER_EVENT_DATA'];
     $number = isset($eventData[$numberEventDataName]) ? $eventData[$numberEventDataName] : null;
@@ -74,11 +87,13 @@ $app->post('/', function(Request $request) use($app, $inno) {
         ));
     }
 
+    // Create Twilio API client
     $client = new Services_Twilio(
         $settings['TWILIO_ACCOUNT_SID'],
         $settings['TWILIO_AUTH_TOKEN']
     );
 
+    // Prepare "make call" request
     try {
         $collectApp = $data['session']['collectApp'];
         $section = $data['session']['section'];
@@ -88,11 +103,11 @@ $app->post('/', function(Request $request) use($app, $inno) {
             $number,
             $url
         );
-        error_log($url);
-    } catch (Services_Twilio_RestException $e) {
-        error_log($e->getMessage());
+    } catch (Services_Twilio_RestException $error) {
+        $message = sprintf('Twilio error: %s', $error->getMessage());
+        error_log($message);
         return $app->json(array(
-            'error' => "Twilio error: " . $e->getMessage()
+            'error' => $message
         ));
     }
 
@@ -108,12 +123,15 @@ $app->post('/', function(Request $request) use($app, $inno) {
 
 // Make a call
 $app->post('/call/{profile}/{sign}/{collectApp}/{section}', function(Request $request, $profile, $sign, $collectApp, $section) use($app, $inno) {
+    if ($app['debug']) {
+        error_log('ROUTE LOG: open "/call/*" - Twilio make request to get config for call.');
+    }
 
-    error_log('>>> /call/{profile}/{sign}/{collectApp}/{section}');
     if (!checkProfileSign($profile, $sign)) {
-        error_log('Bad request');
+        $message = 'Bad request';
+        error_log($message);
         return $app->json(array(
-            'error' => 'Bad request'
+            'error' => $message
         ), 400);
     }
 
@@ -126,9 +144,10 @@ $app->post('/call/{profile}/{sign}/{collectApp}/{section}', function(Request $re
     try {
         $settings = array_merge($settings, $inno->getSettings());
     } catch (\ErrorException $error) {
-        error_log($error->getMessage());
+        $message = $error->getMessage();
+        error_log($message);
         return $app->json(array(
-            'error' => $error->getMessage()
+            'error' => $message
         ));
     }
 
@@ -155,11 +174,16 @@ $app->post('/call/{profile}/{sign}/{collectApp}/{section}', function(Request $re
 
 // Handle request from Twilio when record is ready
 $app->get('/afterCall/{profile}/{sign}/{collectApp}/{section}', function(Request $request, $profile, $sign, $collectApp, $section) use($app, $inno) {
-    error_log('>>> /afterCall/{profile}/{sign}/{collectApp}/{section}');
+
+    if ($app['debug']) {
+        error_log('ROUTE LOG: open "/afterCall/*" - Twilio make request to pass ready RecordingUrl.');
+    }
+
     if (!checkProfileSign($profile, $sign)) {
-        error_log('Bad request');
+        $message = 'Bad request';
+        error_log($message);
         return $app->json(array(
-            'error' => 'Bad request'
+            'error' => $message
         ), 400);
     }
 
@@ -168,10 +192,10 @@ $app->get('/afterCall/{profile}/{sign}/{collectApp}/{section}', function(Request
     // Digits
 
     $recordingUrl = $request->get('RecordingUrl');
+    $error = false;
 
     if (!empty($recordingUrl)) {
         $recordingUrlToMp3 = sprintf('%s.mp3', $recordingUrl);
-        error_log($recordingUrlToMp3);
 
         $inno->setVar('profileId', $profile);
         $inno->setVar('collectApp', $collectApp);
@@ -179,10 +203,12 @@ $app->get('/afterCall/{profile}/{sign}/{collectApp}/{section}', function(Request
         $inno->setAttributes(array(
             'last-voice-feedback' => $recordingUrlToMp3
         ));
+    } else {
+        $error = 'There is no "RecordingUrl" parameter';
     }
 
     return $app->json(array(
-        'error' => false
+        'error' => $error
     ));
 });
 
