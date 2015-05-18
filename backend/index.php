@@ -138,7 +138,8 @@ $app->post('/call/{profile}/{sign}/{collectApp}/{section}', function(Request $re
     $settings = array(
         'RECORD_TIMEOUT'    => 5,
         'RECORD_MAX_LENGTH' => 3600,
-        'RECORD_PLAY_BEEP'  => true
+        'RECORD_PLAY_BEEP'  => true,
+        'VOICE_MESSAGE'     => ''
     );
 
     try {
@@ -151,11 +152,14 @@ $app->post('/call/{profile}/{sign}/{collectApp}/{section}', function(Request $re
         ));
     }
 
-    new Services_Twilio($settings['TWILIO_ACCOUNT_SID'], $settings['TWILIO_AUTH_TOKEN']);
-
     $action = createUrlForPath($request, $profile, '/afterCall') . sprintf('/%s/%s', $collectApp, $section);
 
     $twiml = new Services_Twilio_Twiml();
+
+    // Configure pause for 1 second
+    $twiml->pause(1);
+
+    // Configure record
     $twiml->record(array(
         'action'    => $action,
         'timeout'   => $settings['RECORD_TIMEOUT'],
@@ -163,6 +167,12 @@ $app->post('/call/{profile}/{sign}/{collectApp}/{section}', function(Request $re
         'playBeep'  => $settings['RECORD_PLAY_BEEP'],
         'method'    => 'GET'
     ));
+
+    // Configure speech
+    $voiceMessage = !empty($settings['VOICE_MESSAGE']) ? trim(strval($settings['VOICE_MESSAGE'])) : null;
+    if (!empty($voiceMessage)) {
+        $twiml->say($voiceMessage, array('voice' => 'alice'));
+    }
 
     return new Response(
         $twiml,

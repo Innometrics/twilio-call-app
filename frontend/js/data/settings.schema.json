@@ -40,6 +40,11 @@
         "minimum":1,
         "default":true
     },
+    "VOICE_MESSAGE":{
+        "title":"Voice message",
+        "description": "Application converts text to speech that is read back to the caller (leave empty if no needed)",
+        "type":"string"
+    },
     "NUMBER_EVENT_DATA":{
         "title":"Name of event data with customer phone number",
         "description": "",
