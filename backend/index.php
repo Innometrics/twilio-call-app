@@ -156,8 +156,15 @@ $app->post('/call/{profile}/{sign}/{collectApp}/{section}', function(Request $re
 
     $twiml = new Services_Twilio_Twiml();
 
-    // Configure pause for 1 second
-    $twiml->pause(1);
+
+    // Configure speech
+    $voiceMessage = !empty($settings['VOICE_MESSAGE']) ? trim(strval($settings['VOICE_MESSAGE'])) : null;
+    if (!empty($voiceMessage)) {
+        $twiml->say($voiceMessage, array('voice' => 'alice'));
+    };
+
+    // Configure pause
+    $twiml->pause("");
 
     // Configure record
     $twiml->record(array(
@@ -167,12 +174,6 @@ $app->post('/call/{profile}/{sign}/{collectApp}/{section}', function(Request $re
         'playBeep'  => $settings['RECORD_PLAY_BEEP'],
         'method'    => 'GET'
     ));
-
-    // Configure speech
-    $voiceMessage = !empty($settings['VOICE_MESSAGE']) ? trim(strval($settings['VOICE_MESSAGE'])) : null;
-    if (!empty($voiceMessage)) {
-        $twiml->say($voiceMessage, array('voice' => 'alice'));
-    }
 
     return new Response(
         $twiml,
